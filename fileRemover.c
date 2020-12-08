@@ -1,60 +1,13 @@
+#include "fileRemover.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
-#include <time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <spawn.h>
 #include <sys/wait.h>
-
-// MAX LENGTHS
-#define MAX_PATHNAME_LEN 100000
-#define MAX_GREP_TERM_REGEX 5000
-
-// ARGV Indexes
-#define ARG_INDEX 1
-#define TERM_INDEX 2
-
-// Length of argument type.
-#define ARG_TYPE_LEN 3
-
-// Boolean conditions.
-#define TRUE 1
-#define FALSE 0
-
-// Types of calls.
-#define CALL_NORM 0
-#define CALL_PREFIX 1
-#define CALL_TIME 2
-#define CALL_GREP 3
-
-// Directory
-#define DIR_CHAR '/'
-#define DIR_DELIM "/"
-#define CUR_DIR "./"
-
-// File Descriptors
-#define READ_END 0
-#define WRITE_END 1
-
-static time_t retrieveTime(char path[MAX_PATHNAME_LEN]);
-
-static time_t stripTime(char *datetime);
-
-static int calculateTimeDiff(char *datetime, char filePath[MAX_PATHNAME_LEN]);
-
-static int findPaths(char *searchTerm, char filePath[MAX_PATHNAME_LEN],
-                     int callType);
-static void removeNameFileDir(char **nameCollection, int numNames, 
-                     int isPrefix);
-
-static void removeDirectory(char path[MAX_PATHNAME_LEN]);
-
-static void removeGreppedFile(char **nameCollection, int numNames, int callType);
-
-static int grepFiles(char *grepTerms, char filePath[MAX_PATHNAME_LEN]);
 
 int main (int argc, char *argv[]) {
     if (argc < 3) {
@@ -86,7 +39,7 @@ int main (int argc, char *argv[]) {
 // This function will remove a directory using posix_spawnp. This is a better
 // alternative than rmdir function. However is unsafe, as removals are permanent.
 static void removeDirectory(char path[MAX_PATHNAME_LEN]) {
-    
+
     // Load arguments for posix_spawnp (we're using recursive removal).
     pid_t pid;
     extern char **environ;
@@ -197,9 +150,9 @@ static int findPaths(char *searchTerm, char filePath[MAX_PATHNAME_LEN],
 
                 // Concat directory.
                 strcat(tempPath, DIR_DELIM);
-                if (callType == CALL_TIME && 
-                    calculateTimeDiff(searchTerm, tempPath) || 
-                    callType == CALL_PREFIX && 
+                if (callType == CALL_TIME &&
+                    calculateTimeDiff(searchTerm, tempPath) ||
+                    callType == CALL_PREFIX &&
                     !strncmp(searchTerm, dirp->d_name, strlen(searchTerm))) {
 
                     // Remove directory and add to numFilesRemoved.
@@ -215,7 +168,7 @@ static int findPaths(char *searchTerm, char filePath[MAX_PATHNAME_LEN],
                     callType == CALL_TIME && 
                     calculateTimeDiff(searchTerm, tempPath) ||
                     callType == CALL_GREP && grepFiles(searchTerm, tempPath)) {
-        
+
                     // If we can remove a directory then we add to the numFilesRemoved.
                     numFilesRemoved += remove(tempPath) == 0 ? 1: 0;
                 }
