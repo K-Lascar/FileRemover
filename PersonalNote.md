@@ -16,11 +16,11 @@ char *strptime(const char *s, const char *format, struct tm *tm);
 
 This macro as described 
 
-[here]: https://stackoverflow.com/a/5724485	"here"
+[here](https://stackoverflow.com/a/5724485/)
 
 adds extra functionality that are only defined in X/Open POSIX standards, doing this by changing how libraries behave as described 
 
-[here]: https://stackoverflow.com/a/5379283	"here"
+[here](https://stackoverflow.com/a/5379283)
 
 Even though this convenience, would've slightly improved efficiency, it gave a deeper understanding on what is involved in this function, which is a benefit nonetheless.
 
