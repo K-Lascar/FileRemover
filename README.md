@@ -33,9 +33,7 @@ This project was designed to help comprehend the plethora of components, I've le
 
    - Inspired by the **grep** command in Linux. 
 
-     [More]: https://www.howtogeek.com/496056/how-to-use-the-grep-command-on-linux/	"Details Here"
-
-     .
+     [More here - URL](https://www.howtogeek.com/496056/how-to-use-the-grep-command-on-linux/)
 
    - Two parts to this section, you can either remove files based on one search term or multiple.
 
